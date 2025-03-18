@@ -1,29 +1,4 @@
-# backend/database.py
-from flask_sqlalchemy import SQLAlchemy
-
-# Crear una instancia de SQLAlchemy
-db = SQLAlchemy()
-
-class Perfil(db.Model):
-    Id = db.Column(db.Integer, primary_key=True)
-    Nombre = db.Column(db.String(80), nullable=False)
-    Categoria = db.Column(db.String(80), nullable=False)
-    Nuevo = db.Column(db.Boolean, nullable=False)
-
-class Pista(db.Model):
-    Id = db.Column(db.Integer, primary_key=True)
-    Nombre = db.Column(db.String(80), nullable=False)
-    Dificultad = db.Column(db.String(80), nullable=False)
-
-class Valoraciones(db.Model):
-    idValoracion = db.Column(db.Integer, primary_key=True)
-    IdPerfil = db.Column(db.Integer, db.ForeignKey('perfil.Id'), nullable=False)
-    IdPista = db.Column(db.Integer, db.ForeignKey('pista.Id'), nullable=False)
-    Valoracion = db.Column(db.Integer, nullable=False)
-    FechaValoracion = db.Column(db.DateTime, nullable=False)
-    Comentario = db.Column(db.Text)
-    
-    
+# backend/insert_data.py
 from datetime import datetime
 from database import db, Perfil, Pista, Valoraciones
 
@@ -85,5 +60,9 @@ def insertar_datos_ejemplo():
 
     # Guardar los cambios en la base de datos
     db.session.commit()
-    
-    
+
+# Si ejecutas este archivo directamente, se insertarán los datos
+if __name__ == '__main__':
+    from main import app  # Importar la aplicación Flask
+    with app.app_context():
+        insertar_datos_ejemplo()  # Insertar datos de ejemplo
